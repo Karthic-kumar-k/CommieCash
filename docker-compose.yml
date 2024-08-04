@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: application
+    build: .
+    ports:
+      - 8081:8081
+    restart: always
+    depends_on:
+      cc-db:
+        condition: service_started
+  cc-db:
+    container_name: database
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${MYSQL_DATABASE}
+    volumes:
+      - ./data:/data/db
+
